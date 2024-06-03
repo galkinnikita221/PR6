@@ -81,6 +81,7 @@
         android:layout_marginLeft="80dp"
         android:text="Sign In"
         android:textColor="@color/black"
+        android:onClick="onAuthorization"
         android:gravity="center"
         android:textAllCaps="false"
         android:background="@drawable/radius_button"
