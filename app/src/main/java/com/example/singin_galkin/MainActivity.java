@@ -1,22 +1,21 @@
 package com.example.singin_galkin;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.view.MotionEvent;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import android.os.AsyncTask;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
-import org.w3c.dom.Document;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -215,6 +214,23 @@ public class MainActivity extends AppCompatActivity {
             } else AlertDialog("Авторизация", "Ошибка данных.");
         }
     }
-
+    public void AlertDialog(String title, String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setNegativeButton("OK",
+                        new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public  void onClick(DialogInterface dialog, int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 }
