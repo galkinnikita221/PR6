@@ -100,6 +100,8 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:gravity="center"
         android:background="@drawable/radius_button"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
