@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public int start_x = 0;
 
+    @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         switch (event.getAction())

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="#FFC107"
+    android:layoutAnimation="@transition/anim_setting_left"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -38,6 +39,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
+        android:textColor="@color/black"
+        android:gravity="center"
         android:background="@drawable/radius_button"
         app:layout_constraintTop_toBottomOf="@+id/textLogin"
         tools:layout_editor_absoluteX="60dp" />
@@ -62,6 +65,8 @@
         android:layout_marginLeft="60dp"
         android:padding="10dp"
         android:inputType="textPassword"
+        android:textColor="@color/black"
+        android:gravity="center"
         android:hint="Asdfg123"
         android:background="@drawable/radius_button"
         app:layout_constraintTop_toBottomOf="@+id/textPassword"
@@ -75,6 +80,8 @@
         android:layout_marginRight="80dp"
         android:layout_marginLeft="80dp"
         android:text="Sign In"
+        android:textColor="@color/black"
+        android:gravity="center"
         android:textAllCaps="false"
         android:background="@drawable/radius_button"
         app:layout_constraintTop_toBottomOf="@+id/password" />
