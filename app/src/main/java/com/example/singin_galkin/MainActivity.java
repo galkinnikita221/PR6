@@ -3,6 +3,7 @@ package com.example.singin_galkin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.os.Bundle;
 import android.view.View;
@@ -84,17 +85,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String login, password;
-    public void onAuthorization(View view)
-    {
+    public void onAuthorization(View view) {
         TextView tv_login = findViewById(R.id.login);
-        login = tv_login.getText().toString();
+        String login = tv_login.getText().toString();
 
         TextView tv_password = findViewById(R.id.password);
-        password = tv_password.getText().toString();
+        String password = tv_password.getText().toString();
 
-        GetDataUser gdu = new GetDataUser();
+        GetDataUser gdu = new GetDataUser(login, password);
         gdu.execute();
     }
+
+
 
     public class DataUser{
         public String id;
@@ -111,56 +113,56 @@ public class MainActivity extends AppCompatActivity {
     }
     ArrayList<DataUser> dataUser = new ArrayList();
 
-    class GetDataUser extends AsyncTask<Void, Void, Void>
-    {
-        String body;
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            Document doc_b = null;
-            try
-            {
-                doc_b = Jsoup.connect("https://" + login +"&password="+password).get();
-            } catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-            if(doc_b != null)
-            {
-                body = doc_b.text();
-            } else body = "Ошибка!";
-            return null;
+    class GetDataUser extends AsyncTask<Void, Void, String> {
+        String login;
+        String password;
+
+        public GetDataUser(String login, String password) {
+            this.login = login;
+            this.password = password;
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
-            super.onPostExecute(result);
-            try
-            {
-                if(body.length() != 0)
-                {
-                    JSONArray jsonArray = new JSONArray(body);
-                    dataUser.clear();
-                    for(int i = 0; i<jsonArray.length();i++)
-                    {
-                        JSONObject jsonRead = jsonArray.getJSONObject(i);
-
-                        DataUser duUser = new DataUser();
-                        duUser.setId(jsonRead.getString("id"));
-                        duUser.setLogin(jsonRead.getString("login"));
-                        duUser.setPassword(jsonRead.getString("password"));
-
-                        dataUser.add(duUser);
-                    }
-                    if(dataUser.size() != 0)
-                    {
-                        AlertDialog("Авторизация", "Пользователь авторизован.");
-                    } else
-                        AlertDialog("Авторизация", "Пользователя с таким логином или паролем не существует.");
-                }
-            } catch(JSONException e)
-            {
+        protected String doInBackground(Void... params) {
+            String body = null;
+            try {
+                Log.d("GetDataUser", "Connecting to server...");
+                Document doc_b = Jsoup.connect("http://192.168.1.54/index.php?login=" + login + "&password=" + password).get();
+                body = doc_b.text();
+                Log.d("GetDataUser", "Response body: " + body);
+            } catch(IOException e) {
                 e.printStackTrace();
+                Log.e("GetDataUser", "Error connecting to server", e);
+            }
+            return body;
+        }
+
+        @Override
+        protected void onPostExecute(String body) {
+            super.onPostExecute(body);
+            if (body == null || body.isEmpty()) {
+                AlertDialog("Ошибка", "Не удалось подключиться к серверу.");
+                return;
+            }
+            try {
+                JSONArray jsonArray = new JSONArray(body);
+                dataUser.clear();
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonRead = jsonArray.getJSONObject(i);
+                    DataUser duUser = new DataUser();
+                    duUser.setId(jsonRead.getString("id"));
+                    duUser.setLogin(jsonRead.getString("login"));
+                    duUser.setPassword(jsonRead.getString("password"));
+                    dataUser.add(duUser);
+                }
+                if (dataUser.size() != 0) {
+                    AlertDialog("Авторизация", "Пользователь авторизован.");
+                } else {
+                    AlertDialog("Авторизация", "Пользователя с таким логином или паролем не существует.");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                AlertDialog("Ошибка", "Ошибка обработки данных.");
             }
         }
     }
@@ -183,35 +185,41 @@ public class MainActivity extends AppCompatActivity {
         } else AlertDialog("Авторизация", "Пароли не совпадают");
     }
 
-    class SetDataUser extends AsyncTask<Void, Void, Void>
-    {
+    class SetDataUser extends AsyncTask<Void, Void, String> {
         String body;
+
         @Override
-        protected Void doInBackground(Void... params)
-        {
+        protected String doInBackground(Void... params) {
             Document doc_b = null;
-            try
-            {
-                doc_b = Jsoup.connect("https://0pp0site.000webhostapp.com/regin.php?login="+login+"&password="+password).get();
-            } catch(IOException e)
-            {
-                e.printStackTrace();
-            }
-            if(doc_b != null)
-            {
+            try {
+                Log.d("SetDataUser", "Connecting to server...");
+                doc_b = Jsoup.connect("http://192.168.1.54/regin.php?login=" + login + "&password=" + password).get();
                 body = doc_b.text();
-            } else body = "Ошибка!";
-            return null;
+                Log.d("SetDataUser", "Response body: " + body);
+            } catch(IOException e) {
+                e.printStackTrace();
+                Log.e("SetDataUser", "Error connecting to server", e);
+            }
+            if(doc_b != null) {
+                body = doc_b.text();
+            } else {
+                body = "Ошибка!";
+            }
+            return body;
         }
+
         @Override
-        protected void onPostExecute(Void result)
-        {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(body.length() != 0)
-            {
-                if(body.contains("0")) AlertDialog("Авторизация", "Пользователь с таким логином существует.");
-                else if(body.contains("1")) AlertDialog("Авторизация", "Пользователь зарегистрирован.");
-            } else AlertDialog("Авторизация", "Ошибка данных.");
+            if(body.length() != 0) {
+                if(body.contains("0")) {
+                    AlertDialog("Авторизация", "Пользователь с таким логином существует.");
+                } else if(body.contains("1")) {
+                    AlertDialog("Авторизация", "Пользователь зарегистрирован.");
+                }
+            } else {
+                AlertDialog("Авторизация", "Ошибка данных.");
+            }
         }
     }
     public void AlertDialog(String title, String message)
