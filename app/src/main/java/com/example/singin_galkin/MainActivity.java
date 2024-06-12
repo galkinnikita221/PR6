@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -167,23 +169,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onRegistration(View view)
-    {
+    public void onRegistration(View view) {
+        // Генерация капчи
+        String captcha = generateRandomCaptcha(6);
+        // Сохранение капчи в переменной
+        String actualCaptcha = captcha;
+
+        // Установка капчи в TextView
+        TextView captchaTextView = findViewById(R.id.captchaTextView);
+        captchaTextView.setText(captcha);
+
+        // Получение значений логина, пароля и введенной капчи
         TextView tv_login = findViewById(R.id.login2);
         TextView tv_password = findViewById(R.id.password2);
         TextView tv_password2 = findViewById(R.id.reapeatPassword);
+        EditText et_captcha = findViewById(R.id.captcha);
 
         String a = tv_password.getText().toString();
         String b = tv_password2.getText().toString();
-        if(a.contains(b))
-        {
-            login = tv_login.getText().toString();
-            password = tv_password.getText().toString();
+        String enteredCaptcha = et_captcha.getText().toString();
 
-            SetDataUser sdu = new SetDataUser();
-            sdu.execute();
-        } else AlertDialog("Авторизация", "Пароли не совпадают");
+        // Сравнение паролей и капч
+        if (a.equals(b)) {
+            if (enteredCaptcha.equalsIgnoreCase(actualCaptcha)) {
+                // Если все совпадает, выполнить регистрацию
+                login = tv_login.getText().toString();
+                password = tv_password.getText().toString();
+
+                SetDataUser sdu = new SetDataUser();
+                sdu.execute();
+            } else {
+                // Если капча не совпадает, вывести сообщение об ошибке
+                AlertDialog("Авторизация", "Неверная капча");
+            }
+        } else {
+            // Если пароли не совпадают, вывести сообщение об ошибке
+            AlertDialog("Авторизация", "Пароли не совпадают");
+        }
     }
+    private String captcha = null;
+
+    private String generateRandomCaptcha(int length) {
+        if (captcha == null) {
+            String symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder generatedCaptcha = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < length; i++) {
+                generatedCaptcha.append(symbols.charAt(random.nextInt(symbols.length())));
+            }
+            captcha = generatedCaptcha.toString();
+        }
+        return captcha;
+    }
+
 
     class SetDataUser extends AsyncTask<Void, Void, String> {
         String body;

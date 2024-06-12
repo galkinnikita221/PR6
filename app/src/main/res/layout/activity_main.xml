@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="#FFC107"
-    android:layoutAnimation="@transition/anim_setting_left"
     android:layout_height="match_parent"
+    android:layoutAnimation="@transition/anim_setting_left"
     tools:context=".MainActivity">
 
     <TextView
@@ -35,7 +35,7 @@
     <EditText
         android:id="@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
@@ -59,9 +59,9 @@
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
         android:padding="10dp"
         android:inputType="textPassword"
@@ -71,12 +71,11 @@
         android:background="@drawable/radius_button"
         app:layout_constraintTop_toBottomOf="@+id/textPassword"
         tools:layout_editor_absoluteX="60dp" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/bthSingIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_marginRight="80dp"
         android:layout_marginLeft="80dp"
         android:text="Sign In"

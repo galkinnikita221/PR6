@@ -4,7 +4,6 @@
     android:background="#FFC107"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layoutAnimation="@transition/anim_setting_reight"
     android:layout_height="match_parent">
 
     <TextView
@@ -34,7 +33,7 @@
     <EditText
         android:id="@+id/login2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
@@ -58,9 +57,9 @@
     <EditText
         android:id="@+id/password2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
         android:padding="10dp"
         android:textColor="@color/black"
@@ -85,7 +84,7 @@
     <EditText
         android:id="@+id/reapeatPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="@drawable/radius_button"
         android:inputType="textPassword"
         android:layout_marginRight="60dp"
@@ -97,15 +96,47 @@
         app:layout_constraintTop_toBottomOf="@+id/textRepeatPassword"
         tools:layout_editor_absoluteX="60dp" />
 
+    <TextView
+        android:id="@+id/captchaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:background="@drawable/radius_button"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp"
+        android:padding="8dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginLeft="60dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/reapeatPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/captcha"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/radius_button"
+        android:gravity="center"
+        android:hint="Введите капчу"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
+        android:foregroundGravity="center"
+        android:textColor="@color/black"
+        android:inputType="text"
+        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@+id/reapeatPassword" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:gravity="center"
         android:background="@drawable/radius_button"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="120dp"
         android:onClick="onRegistration"
         android:textAllCaps="false"
         android:text="Sign In"
