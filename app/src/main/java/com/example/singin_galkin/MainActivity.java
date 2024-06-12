@@ -22,13 +22,30 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
-
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        // Загрузка сохраненных данных
+        String savedLogin = sharedPreferences.getString("login", "");
+        String savedPassword = sharedPreferences.getString("password", "");
+
+        if (!savedLogin.isEmpty() && !savedPassword.isEmpty()) {
+            // Если логин и пароль сохранены, можно автоматически заполнить поля или выполнить другие действия
+            TextView tv_login = findViewById(R.id.login);
+            TextView tv_password = findViewById(R.id.password);
+            tv_login.setText(savedLogin);
+            tv_password.setText(savedPassword);
+        }
     }
     public int start_x = 0;
     private int startY;
@@ -42,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case MotionEvent.ACTION_UP:
                 int endY = (int) event.getY();
-                if (startY - endY > 50) { // Свайп вверх
+                if (startY - endY > 50) {
                     goToNextPage();
-                } else if (endY - startY > 50) { // Свайп вниз
+                } else if (endY - startY > 50) {
                     goToPreviousPage();
                 }
                 break;
@@ -158,6 +175,11 @@ public class MainActivity extends AppCompatActivity {
                     dataUser.add(duUser);
                 }
                 if (dataUser.size() != 0) {
+                    // Сохранение логина и пароля в SharedPreferences
+                    editor.putString("login", login);
+                    editor.putString("password", password);
+                    editor.apply();
+
                     AlertDialog("Авторизация", "Пользователь авторизован.");
                 } else {
                     AlertDialog("Авторизация", "Пользователя с таким логином или паролем не существует.");
@@ -167,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog("Ошибка", "Ошибка обработки данных.");
             }
         }
+
     }
 
     public void onRegistration(View view) {
